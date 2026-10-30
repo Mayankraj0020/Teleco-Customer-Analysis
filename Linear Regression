@@ -1,0 +1,132 @@
+# ==========================================
+# 14. CREATE SEPARATE DATASET FOR REGRESSION
+# ==========================================
+
+df_reg = df.copy()
+
+# MonthlyCharges is our target variable
+# TotalCharges and Churn are removed to avoid target leakage
+
+X = df_reg.drop(
+    ['MonthlyCharges', 'TotalCharges', 'Churn'],
+    axis=1
+)
+
+y = df_reg['MonthlyCharges']
+
+print("\nIndependent Variables:")
+print(X.head())
+
+print("\nDependent Variable:")
+print(y.head())
+
+
+# ==========================================
+# 15. LABEL ENCODING
+# ==========================================
+
+label_enc = LabelEncoder()
+
+for col in cat_cols:
+    if col in X.columns:
+        X[col] = label_enc.fit_transform(X[col])
+
+print("\nDataset After Label Encoding:")
+print(X.head())
+
+
+# ==========================================
+# 16. TRAIN TEST SPLIT
+# ==========================================
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y,
+    test_size=0.2,
+    random_state=42
+)
+
+print("\nTraining Data Shape:")
+print(X_train.shape)
+
+print("\nTesting Data Shape:")
+print(X_test.shape)
+
+
+# ==========================================
+# 17. FEATURE SCALING
+# ==========================================
+
+scaler = StandardScaler()
+
+X_train_scaled = scaler.fit_transform(X_train)
+
+X_test_scaled = scaler.transform(X_test)
+
+
+# ==========================================
+# 18. LINEAR REGRESSION MODEL
+# ==========================================
+
+model = LinearRegression()
+
+# Train the model
+model.fit(X_train_scaled, y_train)
+
+# Predict values
+y_pred = model.predict(X_test_scaled)
+
+
+# ==========================================
+# 19. MODEL EVALUATION
+# ==========================================
+
+mae = mean_absolute_error(y_test, y_pred)
+
+mse = mean_squared_error(y_test, y_pred)
+
+rmse = np.sqrt(mse)
+
+r2 = r2_score(y_test, y_pred)
+
+print("\nLinear Regression Model Evaluation")
+
+print("Mean Absolute Error (MAE):", mae)
+
+print("Mean Squared Error (MSE):", mse)
+
+print("Root Mean Squared Error (RMSE):", rmse)
+
+print("R2 Score:", r2)
+
+
+# ==========================================
+# 20. ACTUAL VS PREDICTED VALUES
+# ==========================================
+
+comparison = pd.DataFrame({
+    'Actual Values': y_test.values,
+    'Predicted Values': y_pred
+})
+
+print("\nActual vs Predicted Values:")
+print(comparison.head(10))
+
+
+# ==========================================
+# 21. VISUALIZATION - ACTUAL VS PREDICTED
+# ==========================================
+
+plt.figure(figsize=(8, 5))
+
+plt.scatter(y_test, y_pred, alpha=0.5)
+
+# Ideal prediction reference line
+plt.plot(
+    [y_test.min(), y_test.max()],
+    [y_test.min(), y_test.max()],
+    linestyle='--'
+)
+
+plt.title("Actual vs Predicted Monthly Charges")
+plt.xlabel("Actual Monthly Charges")
+plt.ylabel("Predicted Monthly Charges")
