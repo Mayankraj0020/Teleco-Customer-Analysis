@@ -1,0 +1,63 @@
+# Polynomial Regression
+from sklearn.preprocessing import PolynomialFeatures
+
+X = df[['tenure']]
+y = df['MonthlyCharges']
+
+poly = PolynomialFeatures(degree=5)
+
+X_poly = poly.fit_transform(X)
+
+print("Original X Shape:", X.shape)
+print("Polynomial X Shape:", X_poly.shape)
+
+print("\nPolynomial Features:")
+print(X_poly[:5])
+
+
+# Create Polynomial Regression Model
+
+model = LinearRegression()
+
+model.fit(X_poly, y)
+
+y_pred = model.predict(X_poly)
+
+print("Polynomial Regression Model Created Successfully!")
+
+
+# Polynomial Regression Visualization
+
+# Sort X values
+X_sorted = X.sort_values(by='tenure')
+
+# Transform sorted values
+X_sorted_poly = poly.transform(X_sorted)
+
+# Predict sorted values
+y_sorted_pred = model.predict(X_sorted_poly)
+
+plt.figure(figsize=(8, 5))
+
+plt.scatter(
+    X['tenure'],
+    y,
+    color='blue',
+    alpha=0.3,
+    label='Actual Data'
+)
+
+plt.plot(
+    X_sorted['tenure'],
+    y_sorted_pred,
+    color='red',
+    linewidth=2,
+    label='Polynomial Regression'
+)
+
+plt.title("Polynomial Regression (Degree 5)")
+plt.xlabel("Tenure")
+plt.ylabel("MonthlyCharges")
+
+plt.legend()
+plt.show()
