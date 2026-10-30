@@ -1,0 +1,154 @@
+# ==========================================
+# LOGISTIC REGRESSION
+# ==========================================
+
+# Import Libraries
+from sklearn.preprocessing import LabelEncoder, StandardScaler
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import precision_score
+from sklearn.metrics import recall_score
+from sklearn.metrics import f1_score
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import classification_report
+
+
+# ==========================================
+# 1. CREATE CLASSIFICATION DATASET
+# ==========================================
+
+df_clf = df.copy()
+
+# Independent Variables
+X_clf = df_clf.drop('Churn', axis=1)
+
+# Dependent Variable
+y_clf = df_clf['Churn']
+
+
+# ==========================================
+# 2. LABEL ENCODING
+# ==========================================
+
+label_enc = LabelEncoder()
+
+for col in cat_cols:
+    if col in X_clf.columns:
+        X_clf[col] = label_enc.fit_transform(X_clf[col])
+
+# Encode Target Variable
+y_clf = label_enc.fit_transform(y_clf)
+
+print("Dataset After Label Encoding:")
+print(X_clf.head())
+
+
+# ==========================================
+# 3. TRAIN TEST SPLIT
+# ==========================================
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X_clf,
+    y_clf,
+    test_size=0.2,
+    random_state=42,
+    stratify=y_clf
+)
+
+print("X_train Shape:", X_train.shape)
+print("X_test Shape:", X_test.shape)
+
+print("y_train Shape:", y_train.shape)
+print("y_test Shape:", y_test.shape)
+
+
+# ==========================================
+# 4. FEATURE SCALING
+# ==========================================
+
+scaler = StandardScaler()
+
+X_train_scaled = scaler.fit_transform(X_train)
+
+X_test_scaled = scaler.transform(X_test)
+
+
+# ==========================================
+# 5. CREATE LOGISTIC REGRESSION MODEL
+# ==========================================
+
+model_lr = LogisticRegression()
+
+# Train Model
+model_lr.fit(X_train_scaled, y_train)
+
+# Prediction
+y_pred_lr = model_lr.predict(X_test_scaled)
+
+print("\nLogistic Regression Predictions:")
+print(y_pred_lr[:10])
+
+
+# ==========================================
+# 6. MODEL EVALUATION
+# ==========================================
+
+accuracy = accuracy_score(y_test, y_pred_lr)
+
+precision = precision_score(y_test, y_pred_lr)
+
+recall = recall_score(y_test, y_pred_lr)
+
+f1 = f1_score(y_test, y_pred_lr)
+
+print("\nLogistic Regression Evaluation")
+
+print("Accuracy:", accuracy)
+
+print("Precision:", precision)
+
+print("Recall:", recall)
+
+print("F1 Score:", f1)
+
+
+# ==========================================
+# 7. CONFUSION MATRIX
+# ==========================================
+
+cm = confusion_matrix(y_test, y_pred_lr)
+
+print("\nConfusion Matrix:")
+print(cm)
+
+
+# ==========================================
+# 8. CLASSIFICATION REPORT
+# ==========================================
+
+print("\nClassification Report:")
+print(classification_report(y_test, y_pred_lr))
+
+
+# ==========================================
+# 9. CONFUSION MATRIX VISUALIZATION
+# ==========================================
+
+plt.figure(figsize=(6, 4))
+
+sns.heatmap(
+    cm,
+    annot=True,
+    fmt='d',
+    cmap='Blues',
+    xticklabels=['No Churn', 'Churn'],
+    yticklabels=['No Churn', 'Churn']
+)
+
+plt.title("Logistic Regression - Confusion Matrix")
+plt.xlabel("Predicted Values")
+plt.ylabel("Actual Values")
+
+plt.show()
