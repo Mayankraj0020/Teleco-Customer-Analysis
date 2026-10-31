@@ -1,0 +1,60 @@
+
+# ============================================================
+# 18. RANDOM FOREST
+# ============================================================
+
+model_rf = RandomForestClassifier(
+    n_estimators=100,
+    random_state=42
+)
+
+model_rf.fit(X_train, y_train)
+
+y_pred_rf = model_rf.predict(X_test)
+
+print("\nRandom Forest Predictions:")
+print(y_pred_rf[:10])
+
+# Evaluation
+
+accuracy_rf = accuracy_score(y_test, y_pred_rf)
+
+precision_rf = precision_score(y_test, y_pred_rf)
+
+recall_rf = recall_score(y_test, y_pred_rf)
+
+f1_rf = f1_score(y_test, y_pred_rf)
+
+print("\nRandom Forest Evaluation")
+
+print("Accuracy:", accuracy_rf)
+print("Precision:", precision_rf)
+print("Recall:", recall_rf)
+print("F1 Score:", f1_rf)
+
+# Confusion Matrix
+
+cm_rf = confusion_matrix(y_test, y_pred_rf)
+
+print("\nConfusion Matrix:")
+print(cm_rf)
+
+print("\nClassification Report:")
+print(classification_report(y_test, y_pred_rf))
+
+plt.figure(figsize=(6, 4))
+
+sns.heatmap(
+    cm_rf,
+    annot=True,
+    fmt='d',
+    cmap='Reds',
+    xticklabels=['No Churn', 'Churn'],
+    yticklabels=['No Churn', 'Churn']
+)
+
+plt.title("Random Forest - Confusion Matrix")
+plt.xlabel("Predicted Values")
+plt.ylabel("Actual Values")
+
+plt.show()
