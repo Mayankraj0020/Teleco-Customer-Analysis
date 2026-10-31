@@ -1,0 +1,58 @@
+
+# ============================================================
+# 16. NAIVE BAYES
+# ============================================================
+
+model_nb = GaussianNB()
+
+model_nb.fit(X_train_scaled, y_train)
+
+y_pred_nb = model_nb.predict(X_test_scaled)
+
+print("\nNaive Bayes Predictions:")
+print(y_pred_nb[:10])
+
+# Evaluation
+
+accuracy_nb = accuracy_score(y_test, y_pred_nb)
+
+precision_nb = precision_score(y_test, y_pred_nb)
+
+recall_nb = recall_score(y_test, y_pred_nb)
+
+f1_nb = f1_score(y_test, y_pred_nb)
+
+print("\nNaive Bayes Evaluation")
+
+print("Accuracy:", accuracy_nb)
+print("Precision:", precision_nb)
+print("Recall:", recall_nb)
+print("F1 Score:", f1_nb)
+
+# Confusion Matrix
+
+cm_nb = confusion_matrix(y_test, y_pred_nb)
+
+print("\nConfusion Matrix:")
+print(cm_nb)
+
+print("\nClassification Report:")
+print(classification_report(y_test, y_pred_nb))
+
+plt.figure(figsize=(6, 4))
+
+sns.heatmap(
+    cm_nb,
+    annot=True,
+    fmt='d',
+    cmap='Oranges',
+    xticklabels=['No Churn', 'Churn'],
+    yticklabels=['No Churn', 'Churn']
+)
+
+plt.title("Naive Bayes - Confusion Matrix")
+plt.xlabel("Predicted Values")
+plt.ylabel("Actual Values")
+
+plt.show()
+
