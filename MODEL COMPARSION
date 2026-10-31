@@ -1,0 +1,6 @@
+                 Model  Accuracy  Precision    Recall  F1 Score
+0  Logistic Regression  0.798439   0.640625  0.548128  0.590778
+1                  KNN  0.742370   0.515068  0.502674  0.508796
+2          Naive Bayes  0.746629   0.516008  0.732620  0.605525
+3        Decision Tree  0.737402   0.505000  0.540107  0.521964
+4        Random Forest  0.793471   0.638796  0.510695  0.567608
