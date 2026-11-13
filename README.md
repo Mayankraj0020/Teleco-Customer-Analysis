@@ -2,92 +2,152 @@
 
 ## 📌 Project Overview
 
-This project focuses on analysing telecom customer data and predicting customer churn using Data Analytics and Machine Learning techniques.
+This project focuses on analyzing telecom customer data and predicting whether a customer is likely to leave the company (Churn) or continue using its services.
 
-Customer churn occurs when customers stop using a company's services. The objective of this project is to identify potential churn customers by analysing customer behaviour, service usage, contract details, and billing information.
+The project uses Python, Data Analytics, and Machine Learning techniques to understand customer behavior, explore important patterns, and build predictive models.
 
-The project uses the IBM Telco Customer Churn dataset and applies multiple machine learning algorithms to predict whether a customer is likely to leave the service.
+It also includes regression analysis to predict monthly customer charges.
 
 ## 🎯 Project Objectives
 
-- Analyse telecom customer data to understand customer behaviour.
-- Perform data cleaning and preprocessing.
-- Identify important factors influencing customer churn.
-- Apply Exploratory Data Analysis (EDA) and data visualisation.
-- Build regression and classification models.
-- Compare machine learning models using evaluation metrics.
-- Understand how predictive analytics can support customer retention strategies.
+- Analyze telecom customer data using Exploratory Data Analysis (EDA).
+- Identify customer churn patterns and trends.
+- Understand the relationship between customer attributes and churn.
+- Analyze skewness in numerical features.
+- Detect potential outliers using the IQR method.
+- Predict monthly charges using regression models.
+- Build and compare multiple classification models for churn prediction.
+- Evaluate model performance using different evaluation metrics.
 
-## 📂 Dataset
+## 📂 Dataset Information
 
 **Dataset:** IBM Telco Customer Churn Dataset
 
-- Total Records: 7,043 customers
-- Total Features: 21 columns
-- Target Variable: `Churn`
-- Churn Categories: `Yes` and `No`
+- Original records: 7,043
+- Original features: 21
+- Target variable: `Churn`
+- Target classes: `Yes` and `No`
 
 The dataset contains customer information such as:
-- Demographic details
+
+- Gender
+- Senior Citizen
+- Partner and Dependents
 - Tenure
-- Internet and phone services
-- Contract type
-- Payment method
-- Monthly charges
-- Total charges
-- Customer churn status
+- Phone Service
+- Internet Service
+- Contract Type
+- Payment Method
+- Monthly Charges
+- Total Charges
+- Churn Status
 
-## 🛠️ Tools & Technologies
+## 🛠️ Technologies and Libraries Used
 
-- **Programming Language:** Python
-- **Data Analysis:** Pandas, NumPy
-- **Data Visualization:** Matplotlib, Seaborn
-- **Machine Learning:** Scikit-learn
-- **Development Environment:** Spyder
-- **Version Control:** Git and GitHub
+- Python
+- Pandas
+- NumPy
+- Matplotlib
+- Seaborn
+- Scikit-learn
 
 ## ⚙️ Project Workflow
 
-### 1. Data Cleaning and Preprocessing
-- Checked missing values and duplicate records.
+### 1. Data Loading
+
+- Loaded the Telco Customer Churn CSV dataset using Pandas.
+- Examined the first and last records.
+- Checked dataset dimensions, column names, data types, and statistical summaries.
+
+### 2. Data Cleaning and Preprocessing
+
+- Checked missing values.
 - Converted `TotalCharges` into numeric format.
-- Handled missing values in `TotalCharges`.
-- Removed unnecessary `customerID` column.
-- Separated numerical and categorical features.
+- Replaced invalid or missing `TotalCharges` values with 0.
+- Checked and removed duplicate records.
+- Dropped the `customerID` column because it is an identifier and not a useful predictive feature.
 
-### 2. Exploratory Data Analysis (EDA)
+### 3. Exploratory Data Analysis (EDA)
 
-Performed visual analysis to understand customer churn patterns.
+Performed visual analysis to understand customer behavior using:
 
-Key analysis includes:
-- Overall customer churn distribution.
+- Churn distribution count plot.
 - Contract type vs. churn.
-- Tenure vs. churn.
-- Monthly charges vs. churn.
+- Tenure vs. churn box plot.
+- Monthly charges vs. churn box plot.
 - Internet service vs. churn.
 - Payment method vs. churn.
-- Correlation analysis of numerical features.
+- Correlation heatmap.
 
-### 3. Regression Analysis
+### 4. Skewness Analysis
 
-Applied regression techniques to explore the relationship between customer tenure and monthly charges.
+- Calculated skewness for numerical features.
+- Used histograms with KDE curves to understand feature distributions.
+- Examined whether numerical data was positively or negatively skewed.
 
-- Linear Regression
-- Polynomial Regression
+### 5. Outlier Detection
 
-### 4. Classification Models
+- Used the Interquartile Range (IQR) method.
+- Calculated Q1, Q3, IQR, lower bound, and upper bound.
+- Identified potential outliers in:
+  - Tenure
+  - MonthlyCharges
+  - TotalCharges
+- Used box plots to visualize potential outliers.
 
-Implemented and compared five classification algorithms:
+**Note:** The project detects and analyzes potential outliers; it does not remove or cap them.
 
-1. Logistic Regression
-2. K-Nearest Neighbors (KNN)
-3. Naive Bayes
-4. Decision Tree
-5. Random Forest
+### 6. Regression Models
 
-### 5. Model Evaluation
+Regression analysis was performed to predict `MonthlyCharges`.
 
-Evaluated model performance using:
+**Multiple Linear Regression**
+- Used multiple customer-related input features.
+- Applied Label Encoding to categorical input features.
+- Applied StandardScaler to numerical model inputs.
+- Evaluated predictions using MAE, MSE, RMSE, and R² Score.
+
+**Polynomial Regression**
+- Used `tenure` to predict `MonthlyCharges`.
+- Applied PolynomialFeatures with degree 5.
+- Trained a Linear Regression model on the transformed features.
+- Visualized the actual data and polynomial regression curve.
+
+### 7. Classification Data Preparation
+
+- Selected `Churn` as the target variable.
+- Used the remaining customer attributes as input features.
+- Applied Label Encoding to categorical features.
+- Encoded the target variable:
+  - No = 0
+  - Yes = 1
+- Split the dataset into training and testing sets using an 80:20 ratio.
+- Used stratified splitting to maintain class proportions.
+- Applied StandardScaler for Logistic Regression and KNN.
+
+### 8. Machine Learning Classification Models
+
+Four classification algorithms were implemented:
+
+1. **Logistic Regression**
+   - Used for binary classification of customer churn.
+
+2. **K-Nearest Neighbors (KNN)**
+   - Used to classify customers based on their nearest data points.
+   - Used 5 neighbors.
+
+3. **Decision Tree**
+   - Used tree-based decision rules to predict customer churn.
+   - Visualized the trained decision tree.
+
+4. **Random Forest**
+   - Used an ensemble of 100 decision trees.
+   - Combined predictions using majority voting.
+   - Visualized the first tree from the Random Forest model.
+
+### 9. Model Evaluation
+
+All classification models were evaluated using:
 
 - Accuracy
 - Precision
@@ -96,58 +156,68 @@ Evaluated model performance using:
 - Confusion Matrix
 - Classification Report
 
-## 📊 Model Performance Comparison
+A comparison table and bar chart were created to compare model performance.
 
-The following results were obtained during model evaluation:
+## 📊 Classification Model Results
+
+The following results were obtained from the model comparison:
 
 | Model | Accuracy | Precision | Recall | F1 Score |
 |---|---:|---:|---:|---:|
 | Logistic Regression | 79.84% | 64.06% | 54.81% | 59.08% |
+| Random Forest | 79.49% | 64.31% | 51.07% | 56.93% |
 | KNN | 74.24% | 51.51% | 50.27% | 50.88% |
-| Naive Bayes | 74.66% | 51.60% | 73.26% | 60.55% |
-| Decision Tree | 73.74% | 50.50% | 54.01% | 52.20% |
-| Random Forest | 79.35% | 63.88% | 51.07% | 56.76% |
+| Decision Tree | 72.89% | 48.98% | 51.60% | 50.26% |
 
-### Key Findings
+### 🏆 Best Performing Model
 
-- Logistic Regression achieved the highest accuracy of **79.84%**.
-- Naive Bayes achieved the highest recall of **73.26%**.
-- Naive Bayes also achieved the highest F1 Score of **60.55%**.
-- Logistic Regression performed best in terms of overall accuracy and precision.
+**Logistic Regression** achieved the best overall performance among the four classification models based on the reported results.
 
-**Conclusion:** Naive Bayes is a strong choice when identifying as many potential churn customers as possible is the priority, while Logistic Regression performs best in overall accuracy.
+- Accuracy: 79.84%
+- Precision: 64.06%
+- Recall: 54.81%
+- F1 Score: 59.08%
+
+It achieved the highest Accuracy, Recall, and F1 Score among the tested classification models.
+
+Random Forest achieved the highest Precision of 64.31%.
+
+## 📈 Regression Evaluation Metrics
+
+The regression models were evaluated using:
+
+- **MAE:** Mean Absolute Error
+- **MSE:** Mean Squared Error
+- **RMSE:** Root Mean Squared Error
+- **R² Score:** Coefficient of Determination
+
+The actual regression results are generated when the Python script is executed.
 
 ## 📁 Project Structure
 
 ```text
 Telecom-Customer-Churn-Prediction/
 │
-├── dataset/
-│   └── Telco-Customer-Churn.csv
-│
-├── graphs/
-│   ├── churn_distribution.png
-│   ├── contract_vs_churn.png
-│   ├── tenure_vs_churn.png
-│   ├── monthlycharges_vs_churn.png
-│   ├── internetservice_vs_churn.png
-│   └── model_comparison.png
-│
-├── Telecom_Customer_Churn.py
-│
+├── Telecom-Customer-Churn.csv
+├── telecom_churn.py
 ├── README.md
 │
-└── requirements.txt
+└── outputs/
+    ├── churn_distribution.png
+    ├── correlation_heatmap.png
+    ├── confusion_matrix.png
+    ├── decision_tree.png
+    └── model_comparison.png
 ```
 
-*Note: Adjust the folder and file names according to the files you actually upload.*
+*The outputs folder is optional. Add the actual generated images if you want to display them in your GitHub repository.*
 
 ## ▶️ How to Run the Project
 
 ### Step 1: Clone the Repository
 
 ```bash
-git clone YOUR_GITHUB_REPOSITORY_URL
+git clone https://github.com/your-username/Telecom-Customer-Churn-Prediction.git
 ```
 
 ### Step 2: Navigate to the Project Folder
@@ -159,47 +229,53 @@ cd Telecom-Customer-Churn-Prediction
 ### Step 3: Install Required Libraries
 
 ```bash
-pip install -r requirements.txt
+pip install pandas numpy matplotlib seaborn scikit-learn
 ```
 
-### Step 4: Run the Python File
+### Step 4: Add the Dataset
+
+Download the IBM Telco Customer Churn dataset and place the CSV file in your project folder.
+
+Update the dataset path in the Python script:
+
+```python
+df = pd.read_csv("Telco-Customer-Churn.csv")
+```
+
+### Step 5: Run the Python Script
 
 ```bash
-python Telecom_Customer_Churn.py
+python telecom_churn.py
 ```
 
-## 📦 Requirements
+## 💡 Key Learning Outcomes
 
-```text
-pandas
-numpy
-matplotlib
-seaborn
-scikit-learn
-```
+- Practical experience with data cleaning and preprocessing.
+- Understanding of Exploratory Data Analysis.
+- Analyzing skewness and detecting outliers using IQR.
+- Implementing Multiple Linear and Polynomial Regression.
+- Understanding supervised machine learning and binary classification.
+- Implementing and comparing four classification algorithms.
+- Evaluating models using Accuracy, Precision, Recall, and F1 Score.
+- Visualizing machine learning results using Matplotlib and Seaborn.
 
-## 🔮 Future Scope
+## 🔮 Future Improvements
 
-- Improve model performance through hyperparameter tuning.
-- Apply advanced ensemble learning techniques.
-- Use feature selection to identify the most influential churn factors.
+- Improve churn prediction performance through hyperparameter tuning.
+- Explore additional feature engineering techniques.
+- Address class imbalance using suitable methods.
+- Experiment with additional classification algorithms.
 - Develop an interactive dashboard for customer churn analysis.
 - Deploy the trained model as a web application.
 
-## 🎓 Academic Information
-
-**Course:** INT234 – Predictive Analytics  
-**Institution:** Lovely Professional University (LPU)  
-**Project:** Telecom Customer Churn Prediction Using Data Analytics and Machine Learning
-
 ## 👨‍💻 Author
 
-**Mayank Raj**  
-B.Tech – Computer Science and Engineering  
-Lovely Professional University
+**Mayank Raj**
+
+B.Tech CSE | Data Science & Machine Learning Enthusiast
+
+[LinkedIn](https://www.linkedin.com/in/mayankraj0020/)
 
 ---
 
-⭐ If you find this project useful, feel free to explore the repository and share your feedback.
-
-**Thank you for visiting!**
+⭐ If you find this project useful, feel free to star the repository!
